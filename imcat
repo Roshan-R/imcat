@@ -1,0 +1,32 @@
+#!/bin/bash
+
+usage(){
+    echo "imcat - view images from your terminal"
+    echo
+    echo "imcat [file]"
+
+    exit
+}
+
+[[ "$#" == 0 ]] && usage
+
+row()
+{
+    local COL
+    local ROW
+    IFS=';' read -sdR -p $'\E[6n' ROW COL
+    echo "${ROW#*[}"
+}
+
+row_number=$(row)
+cols=$(tput cols)
+rows=$(tput lines)
+rows=$(echo "$rows - $row_number" | bc)
+
+for var in "$@"
+do
+{
+    declare -Ap add_command=([action]="add" [identifier]="image" [x]="0" [y]="$row_number" [scaler]="contain" [height]="$rows" [width]="$cols" [synchronously_draw]="false" [path]="$var")
+    read
+} | ueberzug layer --parser bash
+done
