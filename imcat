@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 usage(){
     echo "imcat - view images from your terminal"
