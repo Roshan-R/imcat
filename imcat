@@ -23,6 +23,8 @@ cols=$(tput cols)
 rows=$(tput lines)
 rows=$(echo "$rows - $row_number" | bc)
 
+trap 'exit 1' INT
+
 for var in "$@"
 do
 {
